@@ -5305,7 +5305,7 @@ ARjs.Context = THREEx.ArToolkitContext = function(parameters){
 
 Object.assign( ARjs.Context.prototype, THREE.EventDispatcher.prototype );
 
-// ARjs.Context.baseURL = '../'
+ARjs.Context.baseURL = 'https://cdn.glitch.com/'
 // default to github page
 ARjs.Context.baseURL = 'https://jeromeetienne.github.io/AR.js/three.js/'
 ARjs.Context.REVISION = '2.0.6';
@@ -5709,7 +5709,7 @@ ARjs.Profile.prototype.reset = function () {
     }
     this.defaultMarkerParameters = {
         type: 'pattern',
-        patternUrl: THREEx.ArToolkitContext.baseURL + '../data/data/patt.hiro',
+        patternUrl: THREEx.ArToolkitContext.baseURL + 'f1e16262-c497-4fa3-9f7c-5378eb04eda2%2Fpattern-marker4.patt?v=1573669284412',
         changeMatrixMode: 'modelViewMatrix',
     }
     return this
@@ -5772,7 +5772,11 @@ ARjs.Profile.prototype.defaultMarker = function (trackingBackend) {
     } else if (trackingBackend === 'tango') {
         // FIXME temporary placeholder - to reevaluate later
         this.defaultMarkerParameters.type = 'barcode'
-        this.defaultMarkerParameters.barcodeValue = 1001
+		this.defaultMarkerParameters.barcodeValue = 1001
+	} else if (trackingBackend === 'artoolkit'){
+		this.contextParameters.detectionMode = 'mono'
+        this.defaultMarkerParameters.type = 'pattern'
+        this.defaultMarkerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + 'f1e16262-c497-4fa3-9f7c-5378eb04eda2%2Fpattern-marker4.patt?v=1573669284412'
     } else console.assert(false)
 
     return this
@@ -8357,7 +8361,12 @@ AFRAME.registerComponent('arjs-anchor', {
             } else if (_this.data.type === 'pattern') {
                 markerParameters.type = _this.data.type
                 markerParameters.patternUrl = _this.data.patternUrl;
-                markerParameters.markersAreaEnabled = false
+				markerParameters.markersAreaEnabled = false
+			} else if (_this.data.preset === 'myCustomMarker') {
+                markerParameters.type = 'pattern'
+                markerParameters.patternUrl = THREEx.ArToolkitContext.baseURL + 'f1e16262-c497-4fa3-9f7c-5378eb04eda2%2Fpattern-marker4.patt?v=1573669284412'
+				markerParameters.markersAreaEnabled = false
+			}
             } else {
                 // console.assert( this.data.preset === '', 'illegal preset value '+this.data.preset)
             }
